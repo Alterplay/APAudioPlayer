@@ -130,5 +130,9 @@ http://www.un4seen.com/bass.html#license
 1. Seek to time.
 2. Online streaming.
 
+#### Contacts
 
-Feel free to open issues and pull requests. Or email me krivoblotsky@me.com
+If you have improvements or concerns, feel free to post [an issue](https://github.com/Alterplay/APAddressBook/issues) and write details.
+
+[Check out](https://github.com/Alterplay) all Alterplay's GitHub projects.
+[Email us](mailto:hello@alterplay.com?subject=From%20GitHub%20APAddressBook) with other ideas and projects.
