@@ -74,7 +74,7 @@ Get and set volume:
  Will be called when track is over
  */
 
-- (void)playerDidFinishPlaying:(KSAudioPlayer *)player;
+- (void)playerDidFinishPlaying:(APAudioPlayer *)player;
 
 /*
  Will be called when interruption occured.
@@ -82,7 +82,7 @@ Get and set volume:
  Basically you should call - (void)pause in this case.
  */
 
-- (void)playerBeginInterruption:(KSAudioPlayer *)player;
+- (void)playerBeginInterruption:(APAudioPlayer *)player;
 
 /*
  Will be called when interruption ended.
@@ -90,7 +90,7 @@ Get and set volume:
  It's up to you to decide to call - (void)resume or not.
  */
 
-- (void)playerEndInterruption:(KSAudioPlayer *)player shouldResume:(BOOL)should;
+- (void)playerEndInterruption:(APAudioPlayer *)player shouldResume:(BOOL)should;
 
 ```
 
