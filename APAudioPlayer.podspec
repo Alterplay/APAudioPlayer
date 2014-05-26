@@ -7,7 +7,7 @@ Pod::Spec.new do |s|
   s.author       = { "Serg Krivoblotsky" => "sergey@alterplay.com" }
   s.source       = { :git => "https://github.com/Alterplay/APAudioPlayer.git",
 		                 :tag => s.version.to_s }
-  s.source_files = 'KSAudioPlayer/**/*.{h,m}'
+  s.source_files = 'APAudioPlayer/**/*.{h,m}'
   s.ios.vendored_library = 'APAudioPlayer/bass/libbass.a', 'APAudioPlayer/bass/plugins/bassflac/libbassflac.a', 'APAudioPlayer/bass/plugins/bassopus/libbassopus.a', 'APAudioPlayer/bass/plugins/basswv/libbasswv.a'
   s.ios.deployment_target = "6.0"
   s.requires_arc = true
