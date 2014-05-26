@@ -21,7 +21,7 @@ Drop-in iOS Audio Player built on top of BASS-library.
 *.wv.
 ... and even more I haven't tested.
 
-###Dead-simple interface:
+### Dead-simple interface:
 
 
 Play:
@@ -67,7 +67,7 @@ Get and set volume:
 @property (nonatomic, assign) CGFloat volume;
 ```
 
-###Dead-simple protocol:
+### Dead-simple protocol:
 
 ```objc
 /*
@@ -95,29 +95,29 @@ Get and set volume:
 ```
 
 
-###Integration:
+### Integration:
 
 Cocoapods:
 ```ruby
-pod 'KSAudioPlayer'
+pod 'APAudioPlayer'
 ```
 
 Manually:
 
-1. Drag-and-drop KSAudioPlaeyr folder into your project.
+1. Drag-and-drop APAudioPlaeyr folder into your project.
 2. Add AVFoundation.framework to your project
-3. Instantiate KSAudioPlayer and have fun:
+3. Instantiate APAudioPlayer and have fun:
 
 ```objc
 //Somewhere during init
-self.player = [KSAudioPlayer new];
+self.player = [APAudioPlayer new];
 
 //Somewhere else
 NSURL *fileURL = [[NSBundle mainBundle] URLForResource:@"Meat Loaf - Dead Ringer" withExtension:@"wv"];
 [self.player playItemWithURL:fileURL];
 ```
 
-###BASS:
+### BASS:
 
 BASS is an audio library for use in software on several platforms. Its purpose is to provide developers with powerful and efficient sample, stream (MP3, MP2, MP1, OGG, WAV, AIFF, custom generated, and more via OS codecs and add-ons), MOD music (XM, IT, S3M, MOD, MTM, UMX), MO3 music (MP3/OGG compressed MODs), and recording functions. All in a compact DLL that won't bloat your distribution.
 
@@ -125,7 +125,7 @@ http://www.un4seen.com
 
 http://www.un4seen.com/bass.html#license
 
-###What's next?:
+### What's next?:
 
 1. Seek to time.
 2. Online streaming.
