@@ -1,4 +1,4 @@
-<img src="https://dl.dropboxusercontent.com/u/11819370/ksaudioheader.png">
+<img src="https://dl.dropboxusercontent.com/u/2334198/APAudioPlayer-git-teaser.png">
 
 APAudioPlayer
 =============
