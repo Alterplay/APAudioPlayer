@@ -1,0 +1,12 @@
+source 'https://github.com/CocoaPods/Specs.git'
+
+target 'APAudioPlayerExample', :exclusive => true do
+  pod "APAudioPlayer", :path => "../"
+end
+
+target 'APAudioPlayerExampleTests', :exclusive => true do
+  pod "APAudioPlayer", :path => "../"
+  pod "Expecta"
+  pod "OCMock"
+
+end
