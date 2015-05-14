@@ -124,6 +124,10 @@ NSURL *fileURL = [[NSBundle mainBundle] URLForResource:@"Meat Loaf - Dead Ringer
 [self.player playItemWithURL:fileURL];
 ```
 
+### Example:
+
+Checkout [Example](https://github.com/Alterplay/APAudioPlayer/tree/master/APAudioPlayerExample) folder.
+
 ### BASS:
 
 BASS is an audio library for use in software on several platforms. Its purpose is to provide developers with powerful and efficient sample, stream (MP3, MP2, MP1, OGG, WAV, AIFF, custom generated, and more via OS codecs and add-ons), MOD music (XM, IT, S3M, MOD, MTM, UMX), MO3 music (MP3/OGG compressed MODs), and recording functions. All in a compact DLL that won't bloat your distribution.
