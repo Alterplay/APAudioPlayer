@@ -13,16 +13,21 @@
 
 @property (nonatomic, weak) id <APAudioPlayerDelegate> delegate;
 
-/*
-Play. Existing channel will be released
+/**
+ *  Prepares player to play item
+ *
+ *  @param url      NSURL of the track
+ *  @param autoplay BOOL is should play immidiately
+ *
+ *  @return BOOL. Represents success status
  */
-- (BOOL)playItemWithURL:(NSURL *)url;
+- (BOOL)loadItemWithURL:(NSURL *)url autoPlay:(BOOL)autoplay;
 
 /*
  Player interactions
  */
 - (void)pause;
-- (void)resume;
+- (void)play;
 - (void)stop;
 - (BOOL)isPlaying;
 
@@ -38,6 +43,13 @@ Play. Existing channel will be released
 
 @protocol APAudioPlayerDelegate <NSObject>
 @optional
+
+/**
+ *  Notifies the delegate about playing status changed
+ *
+ *  @param player APAudioPlayer
+ */
+- (void)playerDidChangePlayingStatus:(APAudioPlayer *)player;
 
 /*
  Will be called when track is over

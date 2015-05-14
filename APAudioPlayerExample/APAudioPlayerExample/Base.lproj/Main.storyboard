@@ -16,15 +16,78 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="80k-Rn-Ubc">
-                                <rect key="frame" x="128" y="190" width="368" height="30"/>
-                                <state key="normal" title="Button">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                            </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Oue-fv-Rp1" userLabel="ControlsContainer">
+                                <rect key="frame" x="13" y="188" width="574" height="224"/>
+                                <subviews>
+                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="WMH-GK-ySp">
+                                        <rect key="frame" x="18" y="128" width="538" height="31"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="ZqM-Mm-rsS"/>
+                                        </constraints>
+                                        <connections>
+                                            <action selector="volumeSliderValueChanged:" destination="vXZ-lx-hvc" eventType="valueChanged" id="udC-30-XNb"/>
+                                        </connections>
+                                    </slider>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="80k-Rn-Ubc">
+                                        <rect key="frame" x="103" y="76" width="368" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="QkC-mK-evf"/>
+                                        </constraints>
+                                        <state key="normal" title="[Play]">
+                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="togglePlayButtonClicked:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="ur4-SD-dQs"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8nE-cC-d3T">
+                                        <rect key="frame" x="3" y="30" width="568" height="21"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="21" id="Z7c-ip-WwS"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Atw-r5-Uoi">
+                                        <rect key="frame" x="20" y="185" width="534" height="2"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="2" id="XZr-Ek-QKb"/>
+                                        </constraints>
+                                    </progressView>
+                                </subviews>
+                                <color key="backgroundColor" red="0.32171993603584809" green="0.68051274053619715" blue="0.90606060606060612" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="Atw-r5-Uoi" firstAttribute="top" secondItem="WMH-GK-ySp" secondAttribute="bottom" constant="27" id="6K9-YN-Lej"/>
+                                    <constraint firstItem="WMH-GK-ySp" firstAttribute="top" secondItem="80k-Rn-Ubc" secondAttribute="bottom" constant="22" id="774-0r-eo0"/>
+                                    <constraint firstItem="8nE-cC-d3T" firstAttribute="leading" secondItem="Oue-fv-Rp1" secondAttribute="leading" constant="3" id="8Pl-Zc-rYI"/>
+                                    <constraint firstItem="8nE-cC-d3T" firstAttribute="top" secondItem="Oue-fv-Rp1" secondAttribute="top" constant="30" id="F0u-ZB-YE4"/>
+                                    <constraint firstItem="80k-Rn-Ubc" firstAttribute="leading" secondItem="Oue-fv-Rp1" secondAttribute="leading" constant="103" id="HHm-CR-LmV"/>
+                                    <constraint firstAttribute="trailing" secondItem="8nE-cC-d3T" secondAttribute="trailing" constant="3" id="MC3-JU-B8V"/>
+                                    <constraint firstItem="WMH-GK-ySp" firstAttribute="leading" secondItem="Oue-fv-Rp1" secondAttribute="leading" constant="20" id="TF5-H2-tnO"/>
+                                    <constraint firstAttribute="trailing" secondItem="Atw-r5-Uoi" secondAttribute="trailing" constant="20" id="VSK-UG-JhQ"/>
+                                    <constraint firstItem="80k-Rn-Ubc" firstAttribute="top" secondItem="8nE-cC-d3T" secondAttribute="bottom" constant="25" id="XnI-Bc-fLf"/>
+                                    <constraint firstAttribute="trailing" secondItem="WMH-GK-ySp" secondAttribute="trailing" constant="20" id="adr-6B-Rwi"/>
+                                    <constraint firstAttribute="trailing" secondItem="80k-Rn-Ubc" secondAttribute="trailing" constant="103" id="c9L-Yb-av8"/>
+                                    <constraint firstAttribute="height" constant="224" id="mdD-NO-jai"/>
+                                    <constraint firstItem="Atw-r5-Uoi" firstAttribute="leading" secondItem="Oue-fv-Rp1" secondAttribute="leading" constant="20" id="nEz-Ak-i4V"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="Oue-fv-Rp1" secondAttribute="trailing" constant="13" id="05s-Vn-sTN"/>
+                            <constraint firstAttribute="centerY" secondItem="Oue-fv-Rp1" secondAttribute="centerY" id="FwO-uo-VEp"/>
+                            <constraint firstItem="Oue-fv-Rp1" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="13" id="Tmh-zX-24c"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="fileNameLabel" destination="8nE-cC-d3T" id="Koz-rg-LXq"/>
+                        <outlet property="songProgressView" destination="Atw-r5-Uoi" id="kIN-e9-ID9"/>
+                        <outlet property="togglePlayButton" destination="80k-Rn-Ubc" id="gFS-xj-92n"/>
+                        <outlet property="volumeSliderView" destination="WMH-GK-ySp" id="OPw-vz-hLe"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>

@@ -14,6 +14,12 @@
 	HSTREAM _channel;
 }
 
+
+- (void)_notifyStatusChanged;
+- (void)_notifyDidFinishPlaying;
+- (void)_notifyBeginInterruption;
+- (void)_notifyEndInterruptionShouldResume:(BOOL)should;
+
 @end
 
 // the sync callback
@@ -22,9 +28,8 @@ void CALLBACK ChannelEndedCallback(HSYNC handle, DWORD channel, DWORD data, void
     APAudioPlayer *player = (__bridge APAudioPlayer *)(user);
     
     //notify delegate
-    if ([player.delegate respondsToSelector:@selector(playerDidFinishPlaying:)]) {
-        [player.delegate playerDidFinishPlaying:player];
-    }
+    [player _notifyStatusChanged];
+    [player _notifyDidFinishPlaying];
 }
 
 @implementation APAudioPlayer
@@ -69,7 +74,7 @@ void CALLBACK ChannelEndedCallback(HSYNC handle, DWORD channel, DWORD data, void
 
 #pragma mark - Controls
 
-- (BOOL)playItemWithURL:(NSURL *)url
+- (BOOL)loadItemWithURL:(NSURL *)url autoPlay:(BOOL)autoplay
 {
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error: nil];
 	[[AVAudioSession sharedInstance] setActive:YES error:nil];
@@ -85,8 +90,10 @@ void CALLBACK ChannelEndedCallback(HSYNC handle, DWORD channel, DWORD data, void
     //Set callback
     BASS_ChannelSetSync(_channel, BASS_SYNC_END, 0, ChannelEndedCallback, (__bridge void *)self);
     
-    //Let's Rock!
-    BASS_ChannelPlay(_channel, NO);
+    /* Play if needed */
+    if (autoplay) {
+        [self play];
+    }
 
     int code = BASS_ErrorGetCode();
     return code == 0;
@@ -95,16 +102,22 @@ void CALLBACK ChannelEndedCallback(HSYNC handle, DWORD channel, DWORD data, void
 - (void)pause
 {
     BASS_ChannelPause(_channel);
+    
+    [self _notifyStatusChanged];
 }
 
-- (void)resume
+- (void)play
 {
     BASS_ChannelPlay(_channel, NO);
+    
+    [self _notifyStatusChanged];
 }
 
 - (void)stop
 {
     BASS_ChannelStop(_channel);
+    
+    [self _notifyStatusChanged];
 }
 
 - (BOOL)isPlaying
@@ -134,9 +147,7 @@ void CALLBACK ChannelEndedCallback(HSYNC handle, DWORD channel, DWORD data, void
     BASS_SetConfig(BASS_CONFIG_GVOL_STREAM, volume * 10000.0);
 }
 
-#pragma mark -
-#pragma mark - Private API
-#pragma mark - 
+#pragma mark - AudioSessionDelegate
 
 - (void)audioInteruptionOccured:(NSNotification *)notification
 {
@@ -146,24 +157,49 @@ void CALLBACK ChannelEndedCallback(HSYNC handle, DWORD channel, DWORD data, void
     switch (interruptionType) {
         case AVAudioSessionInterruptionTypeBegan: {
             
-            if ([self.delegate respondsToSelector:@selector(playerBeginInterruption:)]) {
-                [self.delegate playerBeginInterruption:self];
-            }
+            [self _notifyBeginInterruption];
         }
             
             break;
         case AVAudioSessionInterruptionTypeEnded: {
             AVAudioSessionInterruptionOptions options = [interruptionDictionary[AVAudioSessionInterruptionOptionKey] integerValue];
             
-            if ([self.delegate respondsToSelector:@selector(playerEndInterruption:shouldResume:)]) {
-                [self.delegate playerEndInterruption:self
-                                        shouldResume:options == AVAudioSessionInterruptionOptionShouldResume];
-            }
+            [self _notifyEndInterruptionShouldResume:options == AVAudioSessionInterruptionOptionShouldResume];
         }
             break;
             
         default:
             break;
+    }
+}
+
+#pragma mark - Private
+
+- (void)_notifyStatusChanged
+{
+    if ([self.delegate respondsToSelector:@selector(playerDidChangePlayingStatus:)]) {
+        [self.delegate playerDidChangePlayingStatus:self];
+    }
+}
+
+- (void)_notifyDidFinishPlaying
+{
+    if ([self.delegate respondsToSelector:@selector(playerDidFinishPlaying:)]) {
+        [self.delegate playerDidFinishPlaying:self];
+    }
+}
+
+- (void)_notifyBeginInterruption
+{
+    if ([self.delegate respondsToSelector:@selector(playerBeginInterruption:)]) {
+        [self.delegate playerBeginInterruption:self];
+    }
+}
+
+- (void)_notifyEndInterruptionShouldResume:(BOOL)should
+{
+    if ([self.delegate respondsToSelector:@selector(playerEndInterruption:shouldResume:)]) {
+        [self.delegate playerEndInterruption:self shouldResume:should];
     }
 }
 
