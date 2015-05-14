@@ -70,26 +70,33 @@ Get and set volume:
 ### Dead-simple protocol:
 
 ```objc
-/*
- Will be called when track is over
+/**
+ *  Notifies the delegate about playing status changed
+ *
+ *  @param player APAudioPlayer
  */
+- (void)playerDidChangePlayingStatus:(APAudioPlayer *)player;
 
+/**
+ *  Will be called when track is over
+ *
+ *  @param player APAudioPlayer
+ */
 - (void)playerDidFinishPlaying:(APAudioPlayer *)player;
 
-/*
- Will be called when interruption occured.
- For ex. phone call.
- Basically you should call - (void)pause in this case.
+/**
+ *   Will be called when interruption occured. For ex. phone call. Basically you should call - (void)pause in this case.
+ *
+ *  @param player APAudioPlayer
  */
-
 - (void)playerBeginInterruption:(APAudioPlayer *)player;
 
-/*
- Will be called when interruption ended.
- For ex. phone call ended.
- It's up to you to decide to call - (void)resume or not.
+/**
+ *   Will be called when interruption ended. For ex. phone call ended. It's up to you to decide to call - (void)resume or not.
+ *
+ *  @param player APAudioPlayer
+ *  @param should BOOL
  */
-
 - (void)playerEndInterruption:(APAudioPlayer *)player shouldResume:(BOOL)should;
 
 ```
@@ -116,6 +123,10 @@ self.player = [APAudioPlayer new];
 NSURL *fileURL = [[NSBundle mainBundle] URLForResource:@"Meat Loaf - Dead Ringer" withExtension:@"wv"];
 [self.player playItemWithURL:fileURL];
 ```
+
+### Example:
+
+Checkout [Example](https://github.com/Alterplay/APAudioPlayer/tree/master/APAudioPlayerExample) folder.
 
 ### BASS:
 
