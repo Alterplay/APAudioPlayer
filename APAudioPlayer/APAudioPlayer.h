@@ -51,26 +51,26 @@
  */
 - (void)playerDidChangePlayingStatus:(APAudioPlayer *)player;
 
-/*
- Will be called when track is over
+/**
+ *  Will be called when track is over
+ *
+ *  @param player APAudioPlayer
  */
-
 - (void)playerDidFinishPlaying:(APAudioPlayer *)player;
 
-/*
- Will be called when interruption occured.
- For ex. phone call.
- Basically you should call - (void)pause in this case.
+/**
+ *   Will be called when interruption occured. For ex. phone call. Basically you should call - (void)pause in this case.
+ *
+ *  @param player APAudioPlayer
  */
-
 - (void)playerBeginInterruption:(APAudioPlayer *)player;
 
-/*
- Will be called when interruption ended.
- For ex. phone call ended.
- It's up to you to decide to call - (void)resume or not.
+/**
+ *   Will be called when interruption ended. For ex. phone call ended. It's up to you to decide to call - (void)resume or not.
+ *
+ *  @param player APAudioPlayer
+ *  @param should BOOL
  */
-
 - (void)playerEndInterruption:(APAudioPlayer *)player shouldResume:(BOOL)should;
 
 @end
