@@ -139,8 +139,7 @@ http://www.un4seen.com/bass.html#license
 
 ### What's next?:
 
-1. Seek to time.
-2. Online streaming.
+1. Online streaming.
 
 #### Contacts
 
