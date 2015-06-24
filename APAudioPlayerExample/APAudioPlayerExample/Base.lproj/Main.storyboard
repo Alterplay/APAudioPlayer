@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -50,28 +50,32 @@
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Atw-r5-Uoi">
-                                        <rect key="frame" x="20" y="185" width="534" height="2"/>
+                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="734-33-oap">
+                                        <rect key="frame" x="18" y="166" width="538" height="31"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="2" id="XZr-Ek-QKb"/>
+                                            <constraint firstAttribute="height" constant="30" id="kRs-9w-fp0"/>
                                         </constraints>
-                                    </progressView>
+                                        <connections>
+                                            <action selector="positionSliderValueChanged:" destination="vXZ-lx-hvc" eventType="touchUpOutside" id="SsD-30-svI"/>
+                                            <action selector="positionSliderValueChanged:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="z5z-lE-HbM"/>
+                                        </connections>
+                                    </slider>
                                 </subviews>
                                 <color key="backgroundColor" red="0.32171993603584809" green="0.68051274053619715" blue="0.90606060606060612" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstItem="Atw-r5-Uoi" firstAttribute="top" secondItem="WMH-GK-ySp" secondAttribute="bottom" constant="27" id="6K9-YN-Lej"/>
+                                    <constraint firstAttribute="trailing" secondItem="734-33-oap" secondAttribute="trailing" constant="20" id="6zU-sF-Sai"/>
                                     <constraint firstItem="WMH-GK-ySp" firstAttribute="top" secondItem="80k-Rn-Ubc" secondAttribute="bottom" constant="22" id="774-0r-eo0"/>
                                     <constraint firstItem="8nE-cC-d3T" firstAttribute="leading" secondItem="Oue-fv-Rp1" secondAttribute="leading" constant="3" id="8Pl-Zc-rYI"/>
+                                    <constraint firstItem="734-33-oap" firstAttribute="leading" secondItem="Oue-fv-Rp1" secondAttribute="leading" constant="20" id="DhO-8T-6ry"/>
                                     <constraint firstItem="8nE-cC-d3T" firstAttribute="top" secondItem="Oue-fv-Rp1" secondAttribute="top" constant="30" id="F0u-ZB-YE4"/>
                                     <constraint firstItem="80k-Rn-Ubc" firstAttribute="leading" secondItem="Oue-fv-Rp1" secondAttribute="leading" constant="103" id="HHm-CR-LmV"/>
                                     <constraint firstAttribute="trailing" secondItem="8nE-cC-d3T" secondAttribute="trailing" constant="3" id="MC3-JU-B8V"/>
                                     <constraint firstItem="WMH-GK-ySp" firstAttribute="leading" secondItem="Oue-fv-Rp1" secondAttribute="leading" constant="20" id="TF5-H2-tnO"/>
-                                    <constraint firstAttribute="trailing" secondItem="Atw-r5-Uoi" secondAttribute="trailing" constant="20" id="VSK-UG-JhQ"/>
+                                    <constraint firstAttribute="bottom" secondItem="734-33-oap" secondAttribute="bottom" constant="28" id="Ua1-4B-mi1"/>
                                     <constraint firstItem="80k-Rn-Ubc" firstAttribute="top" secondItem="8nE-cC-d3T" secondAttribute="bottom" constant="25" id="XnI-Bc-fLf"/>
                                     <constraint firstAttribute="trailing" secondItem="WMH-GK-ySp" secondAttribute="trailing" constant="20" id="adr-6B-Rwi"/>
                                     <constraint firstAttribute="trailing" secondItem="80k-Rn-Ubc" secondAttribute="trailing" constant="103" id="c9L-Yb-av8"/>
                                     <constraint firstAttribute="height" constant="224" id="mdD-NO-jai"/>
-                                    <constraint firstItem="Atw-r5-Uoi" firstAttribute="leading" secondItem="Oue-fv-Rp1" secondAttribute="leading" constant="20" id="nEz-Ak-i4V"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -84,7 +88,7 @@
                     </view>
                     <connections>
                         <outlet property="fileNameLabel" destination="8nE-cC-d3T" id="Koz-rg-LXq"/>
-                        <outlet property="songProgressView" destination="Atw-r5-Uoi" id="kIN-e9-ID9"/>
+                        <outlet property="progressSliderView" destination="734-33-oap" id="yYw-c5-d3D"/>
                         <outlet property="togglePlayButton" destination="80k-Rn-Ubc" id="gFS-xj-92n"/>
                         <outlet property="volumeSliderView" destination="WMH-GK-ySp" id="OPw-vz-hLe"/>
                     </connections>

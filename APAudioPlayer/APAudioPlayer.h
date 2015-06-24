@@ -35,8 +35,9 @@
  Player values
  */
 - (NSTimeInterval)duration;
-- (NSTimeInterval)position;
 
+/* Represents  */
+@property (nonatomic, assign) CGFloat position;
 @property (nonatomic, assign) CGFloat volume;
 
 @end

@@ -19,7 +19,10 @@ static NSString *const kFileToTestNameInTheBundle = @"14 - rape me (nirvana cove
 /* UI */
 @property (weak, nonatomic) IBOutlet UILabel *fileNameLabel;
 @property (weak, nonatomic) IBOutlet UIProgressView *songProgressView;
+
 @property (weak, nonatomic) IBOutlet UISlider *volumeSliderView;
+@property (weak, nonatomic) IBOutlet UISlider *progressSliderView;
+
 @property (weak, nonatomic) IBOutlet UIButton *togglePlayButton;
 
 /* Timer */
@@ -58,7 +61,7 @@ static NSString *const kFileToTestNameInTheBundle = @"14 - rape me (nirvana cove
 
 - (void)updateTrackProgressView:(NSTimer *)timer
 {
-    self.songProgressView.progress = self.player.position / self.player.duration;
+    self.progressSliderView.value = self.player.position;
 }
 
 - (void)updateTogglePlayButton
@@ -84,6 +87,11 @@ static NSString *const kFileToTestNameInTheBundle = @"14 - rape me (nirvana cove
 - (IBAction)volumeSliderValueChanged:(UISlider *)slider
 {
     self.player.volume = slider.value;
+}
+
+- (IBAction)positionSliderValueChanged:(UISlider *)sender
+{
+    self.player.position = sender.value;
 }
 
 #pragma mark - APAudioPlayerDelegate

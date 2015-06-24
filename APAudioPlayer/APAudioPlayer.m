@@ -14,6 +14,11 @@
 	HSTREAM _channel;
 }
 
+/* Represents current notification center */
+@property (nonatomic, strong) NSNotificationCenter *notificationCenter;
+
+/* Represents current audio session */
+@property (nonatomic, strong) AVAudioSession *audioSession;
 
 - (void)_notifyStatusChanged;
 - (void)_notifyDidFinishPlaying;
@@ -36,10 +41,19 @@ void CALLBACK ChannelEndedCallback(HSYNC handle, DWORD channel, DWORD data, void
 
 #pragma mark - Initialization
 
-- (id)init
+- (instancetype)init
+{
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+    return [self initWithNotificationCenter:notificationCenter audioSession:audioSession];
+}
+
+- (instancetype)initWithNotificationCenter:(NSNotificationCenter *)notificationCenter audioSession:(AVAudioSession *)audioSession
 {
     self = [super init];
     if (self) {
+        _audioSession = audioSession;
+        _notificationCenter = notificationCenter;
         
         //Load flac
         extern void BASSFLACplugin, BASSWVplugin, BASSOPUSplugin;
@@ -49,12 +63,12 @@ void CALLBACK ChannelEndedCallback(HSYNC handle, DWORD channel, DWORD data, void
         
         //BASS init
         BASS_Init(-1, 44100, 0, NULL, NULL);
-
+        
         //Observe interuptions
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(audioInteruptionOccured:)
-                                                     name:AVAudioSessionInterruptionNotification
-                                                   object:nil];
+        [notificationCenter addObserver:self
+                               selector:@selector(audioInteruptionOccured:)
+                                   name:AVAudioSessionInterruptionNotification
+                                 object:nil];
         
         //Set volume
         _volume = BASS_GetConfig(BASS_CONFIG_GVOL_STREAM) / 10000.0f;
@@ -64,7 +78,7 @@ void CALLBACK ChannelEndedCallback(HSYNC handle, DWORD channel, DWORD data, void
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self.notificationCenter removeObserver:self];
     BASS_Free();
 }
 
@@ -76,8 +90,8 @@ void CALLBACK ChannelEndedCallback(HSYNC handle, DWORD channel, DWORD data, void
 
 - (BOOL)loadItemWithURL:(NSURL *)url autoPlay:(BOOL)autoplay
 {
-    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error: nil];
-	[[AVAudioSession sharedInstance] setActive:YES error:nil];
+    [self.audioSession setCategory:AVAudioSessionCategoryPlayback error: nil];
+	[self.audioSession setActive:YES error:nil];
     
     //Stop channel;
     BASS_ChannelStop(_channel);
@@ -131,15 +145,28 @@ void CALLBACK ChannelEndedCallback(HSYNC handle, DWORD channel, DWORD data, void
 - (NSTimeInterval)duration
 {
     QWORD len = BASS_ChannelGetLength(_channel, BASS_POS_BYTE);
+    
     double time = BASS_ChannelBytes2Seconds(_channel, len);
     return time;
 }
 
-- (NSTimeInterval)position
+- (CGFloat)position
 {
-    QWORD len = BASS_ChannelGetPosition(_channel, BASS_POS_BYTE);
-    double position = BASS_ChannelBytes2Seconds(_channel, len);
+    QWORD positionBytes = BASS_ChannelGetPosition(_channel, BASS_POS_BYTE);
+    QWORD len = BASS_ChannelGetLength(_channel, BASS_POS_BYTE);
+    
+    double position = (double)positionBytes / (double)len;//BASS_ChannelBytes2Seconds(_channel, positionBytes);
+    
+    NSLog(@"%f", (double)positionBytes / (double)len);
     return position;
+}
+
+- (void)setPosition:(CGFloat)position
+{
+    QWORD len = BASS_ChannelGetLength(_channel, BASS_POS_BYTE);
+    double bytesPosition = len * position;
+    
+    BASS_ChannelSetPosition(_channel, bytesPosition, BASS_POS_BYTE);
 }
 
 - (void)setVolume:(CGFloat)volume {
@@ -162,8 +189,8 @@ void CALLBACK ChannelEndedCallback(HSYNC handle, DWORD channel, DWORD data, void
             
             break;
         case AVAudioSessionInterruptionTypeEnded: {
-            AVAudioSessionInterruptionOptions options = [interruptionDictionary[AVAudioSessionInterruptionOptionKey] integerValue];
             
+            AVAudioSessionInterruptionOptions options = [interruptionDictionary[AVAudioSessionInterruptionOptionKey] integerValue];
             [self _notifyEndInterruptionShouldResume:options == AVAudioSessionInterruptionOptionShouldResume];
         }
             break;
