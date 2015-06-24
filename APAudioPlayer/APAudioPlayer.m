@@ -155,9 +155,7 @@ void CALLBACK ChannelEndedCallback(HSYNC handle, DWORD channel, DWORD data, void
     QWORD positionBytes = BASS_ChannelGetPosition(_channel, BASS_POS_BYTE);
     QWORD len = BASS_ChannelGetLength(_channel, BASS_POS_BYTE);
     
-    double position = (double)positionBytes / (double)len;//BASS_ChannelBytes2Seconds(_channel, positionBytes);
-    
-    NSLog(@"%f", (double)positionBytes / (double)len);
+    double position = (double)positionBytes / (double)len;
     return position;
 }
 

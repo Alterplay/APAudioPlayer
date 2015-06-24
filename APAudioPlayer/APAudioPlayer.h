@@ -36,8 +36,10 @@
  */
 - (NSTimeInterval)duration;
 
-/* Represents  */
+/* Represents current position 0..1 */
 @property (nonatomic, assign) CGFloat position;
+
+/* Represents current volume 0..1 */
 @property (nonatomic, assign) CGFloat volume;
 
 @end
