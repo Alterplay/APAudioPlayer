@@ -52,10 +52,11 @@ Get current track duration:
 - (NSTimeInterval)duration;
 ```
 
-Get current track position:
+Get and set current track position:
 
 ```objc
-- (NSTimeInterval)position;
+/* Represents current position 0..1 */
+@property (nonatomic, assign) CGFloat position;
 ```
 
 Get and set volume:
@@ -138,8 +139,7 @@ http://www.un4seen.com/bass.html#license
 
 ### What's next?:
 
-1. Seek to time.
-2. Online streaming.
+1. Online streaming.
 
 #### Contacts
 
