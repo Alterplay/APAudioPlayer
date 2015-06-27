@@ -11,5 +11,5 @@ Pod::Spec.new do |s|
   s.ios.vendored_library = 'APAudioPlayer/bass/libbass.a', 'APAudioPlayer/bass/plugins/bassflac/libbassflac.a', 'APAudioPlayer/bass/plugins/bassopus/libbassopus.a', 'APAudioPlayer/bass/plugins/basswv/libbasswv.a'
   s.ios.deployment_target = "6.0"
   s.requires_arc = true
-  s.frameworks   = 'AVFoundation'git
+  s.frameworks   = 'AVFoundation'
 end
