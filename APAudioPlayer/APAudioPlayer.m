@@ -30,11 +30,12 @@
 // the sync callback
 void CALLBACK ChannelEndedCallback(HSYNC handle, DWORD channel, DWORD data, void *user)
 {
-    APAudioPlayer *player = (__bridge APAudioPlayer *)(user);
-    
     //notify delegate
-    [player _notifyStatusChanged];
-    [player _notifyDidFinishPlaying];
+    APAudioPlayer *player = (__bridge APAudioPlayer *)(user);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [player _notifyStatusChanged];
+        [player _notifyDidFinishPlaying];
+    });
 }
 
 @implementation APAudioPlayer
