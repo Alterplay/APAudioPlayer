@@ -14,6 +14,8 @@
 	HSTREAM _channel;
 }
 
+@property (assign, nonatomic) APAudioPlayerState currentState;
+
 /* Represents current notification center */
 @property (nonatomic, strong) NSNotificationCenter *notificationCenter;
 
@@ -73,6 +75,8 @@ void CALLBACK ChannelEndedCallback(HSYNC handle, DWORD channel, DWORD data, void
         
         //Set volume
         _volume = BASS_GetConfig(BASS_CONFIG_GVOL_STREAM) / 10000.0f;
+        
+        _currentState = APAudioPlayerStateStopped;
     }
     return self;
 }
@@ -83,56 +87,116 @@ void CALLBACK ChannelEndedCallback(HSYNC handle, DWORD channel, DWORD data, void
     BASS_Free();
 }
 
+- (void) setCurrentState:(APAudioPlayerState)currentState{
+    
+    _currentState = currentState;
+    
+    __weak typeof(self) weakSelf = self;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [weakSelf.player _notifyStatusChanged];
+    });
+}
+
 #pragma mark -
 #pragma mark - Public API
 #pragma mark -
 
 #pragma mark - Controls
 
-- (BOOL)loadItemWithURL:(NSURL *)url autoPlay:(BOOL)autoplay
+- (void)loadItemWithPath:(NSURL *)urlPath autoPlay:(BOOL)autoplay
 {
-    [self.audioSession setCategory:AVAudioSessionCategoryPlayback error: nil];
-	[self.audioSession setActive:YES error:nil];
     
-    //Stop channel;
-    BASS_ChannelStop(_channel);
+    self.currentState = APAudioPlayerStateBuffering;
     
-    //Free memory
-    BASS_StreamFree(_channel);
+    __weak typeof(self) weakSelf = self;
     
-    _channel = BASS_StreamCreateFile(FALSE, [[url path] cStringUsingEncoding:NSUTF8StringEncoding], 0, 0, 0);
-    
-    //Set callback
-    BASS_ChannelSetSync(_channel, BASS_SYNC_END, 0, ChannelEndedCallback, (__bridge void *)self);
-    
-    /* Play if needed */
-    if (autoplay) {
-        [self play];
-    }
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        
+        [weakSelf.audioSession setCategory:AVAudioSessionCategoryPlayback error: nil];
+        [weakSelf.audioSession setActive:YES error:nil];
+        
+        //Stop channel;
+        BASS_ChannelStop(_channel);
+        
+        //Free memory
+        BASS_StreamFree(_channel);
+        
+        _channel = BASS_StreamCreateFile(FALSE, [[urlPath path] cStringUsingEncoding:NSUTF8StringEncoding], 0, 0, 0);
+        
+        //Set callback
+        BASS_ChannelSetSync(_channel, BASS_SYNC_END, 0, ChannelEndedCallback, (__bridge void *)weakSelf);
+        
+        /* Play if needed */
+        if (autoplay) {
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf play];
+            });
+        }
+        
+        int code = BASS_ErrorGetCode();
+        
+    });
+}
 
-    int code = BASS_ErrorGetCode();
-    return code == 0;
+- (void)loadItemWithURL:(NSURL *)url autoPlay:(BOOL)autoplay
+{
+    
+    self.currentState = APAudioPlayerStateBuffering;
+    
+    __weak typeof(self) weakSelf = self;
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        
+        [weakSelf.audioSession setCategory:AVAudioSessionCategoryPlayback error: nil];
+        [weakSelf.audioSession setActive:YES error:nil];
+        
+        //Stop channel;
+        BASS_ChannelStop(_channel);
+        
+        //Free memory
+        BASS_StreamFree(_channel);
+        
+        
+        _channel = BASS_StreamCreateURL([[url absoluteString] cStringUsingEncoding:NSUTF8StringEncoding], 0, 0, NULL, NULL);
+        //_channel = BASS_StreamCreateFile(FALSE, [[url path] cStringUsingEncoding:NSUTF8StringEncoding], 0, 0, 0);
+        
+        //Set callback
+        BASS_ChannelSetSync(_channel, BASS_SYNC_END, 0, ChannelEndedCallback, (__bridge void *)weakSelf);
+        
+        /* Play if needed */
+        if (autoplay) {
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf play];
+            });
+        }
+        
+        int code = BASS_ErrorGetCode();
+        
+    });
 }
 
 - (void)pause
 {
     BASS_ChannelPause(_channel);
     
-    [self _notifyStatusChanged];
+    self.currentState = APAudioPlayerStatePaused;
 }
 
 - (void)play
 {
-    BASS_ChannelPlay(_channel, NO);
-    
-    [self _notifyStatusChanged];
+    if (self.currentState != APAudioPlayerStateStopped) {
+        
+        BASS_ChannelPlay(_channel, NO);
+        self.currentState = APAudioPlayerStatePlaying;
+    }
 }
 
 - (void)stop
 {
     BASS_ChannelStop(_channel);
-    
-    [self _notifyStatusChanged];
+    self.currentState = APAudioPlayerStateStopped;
 }
 
 - (BOOL)isPlaying

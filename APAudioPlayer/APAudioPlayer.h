@@ -8,10 +8,28 @@
 
 #import <Foundation/Foundation.h>
 
+typedef NS_ENUM(NSInteger, APAudioPlayerState) {
+    APAudioPlayerStateStopped,
+    APAudioPlayerStatePlaying,
+    APAudioPlayerStatePaused,
+    APAudioPlayerStateError,
+    APAudioPlayerStateBuffering
+};
+
 @protocol APAudioPlayerDelegate;
 @interface APAudioPlayer : NSObject
 
 @property (nonatomic, weak) id <APAudioPlayerDelegate> delegate;
+@property (assign, nonatomic, readonly) APAudioPlayerState currentState;
+
+/**
+ *  Prepares player to play item
+ *
+ *  @param urlPath      NSURL path of the track
+ *  @param autoplay BOOL is should play immidiately
+ *
+ */
+- (void)loadItemWithPath:(NSURL *)urlPath autoPlay:(BOOL)autoplay;
 
 /**
  *  Prepares player to play item
@@ -19,9 +37,8 @@
  *  @param url      NSURL of the track
  *  @param autoplay BOOL is should play immidiately
  *
- *  @return BOOL. Represents success status
  */
-- (BOOL)loadItemWithURL:(NSURL *)url autoPlay:(BOOL)autoplay;
+- (void)loadItemWithURL:(NSURL *)url autoPlay:(BOOL)autoplay;
 
 /*
  Player interactions
