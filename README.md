@@ -103,7 +103,7 @@ Get and set volume:
 
 ### Integration:
 
-Cocoapods:
+CocoaPods:
 ```ruby
 pod 'APAudioPlayer'
 ```
