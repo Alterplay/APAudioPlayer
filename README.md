@@ -1,10 +1,10 @@
-#APAudioPlayer
+# APAudioPlayer
 
 <img src="https://dl.dropboxusercontent.com/u/2334198/APAudioPlayer-git-teaser.png">
 
 Drop-in iOS Audio Player built on top of BASS-library. 
 
-###Supported formats:
+### Supported formats:
 
 *.m4a,
 *.mp3,
